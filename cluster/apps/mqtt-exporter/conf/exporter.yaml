@@ -1,0 +1,9 @@
+mqtt:
+  host: "home-mqtt"
+
+metrics:
+  - name: "gartenwasser"
+    help: "Zaehler vom Gartenwasser"
+    type: "counter"
+    topic: "gartenwasser/main/value"
+

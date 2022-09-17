@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mqtt-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mqtt-exporter
+  template:
+    metadata:
+      labels:
+        app: mqtt-exporter
+    spec:
+      containers:
+      - image: hesscon/mqtt-exporter:buildx-lastest
+        imagePullPolicy: IfNotPresent
+        name: mqtt-exporter
+        ports:
+        - containerPort: 9344
+        volumeMounts:
+          - name: config
+            mountPath: /usr/src/app/conf
+      volumes:
+      - name: config
+        configMap:
+          name: mqtt-exporter

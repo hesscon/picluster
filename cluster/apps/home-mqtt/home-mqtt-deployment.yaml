@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: home-mqtt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: home-mqtt
+  template:
+    metadata:
+      labels:
+        app: home-mqtt
+    spec:
+      containers:
+      - image: eclipse-mosquitto
+        imagePullPolicy: IfNotPresent
+        name: eclipse-mosquitto
+        ports:
+        - containerPort: 1883
+        volumeMounts:
+          - name: persistence
+            mountPath: /mosquitto/data
+          - name: config
+            mountPath: /mosquitto/config/mosquitto.conf
+            subPath: mosquitto.conf
+      volumes:
+      - name: persistence
+        persistentVolumeClaim:
+          claimName: home-mqtt
+      - name: config
+        configMap:
+          name: home-mqtt
